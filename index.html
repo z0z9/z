@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+        .offline-container {
+            text-align: center;
+        }
+        .offline-icon {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 20px;
+        }
+        .offline-heading {
+            color: #5f6368;
+            font-size: 1.3em;
+            margin-bottom: 10px;
+        }
+        .offline-text {
+            color: #80868b;
+            font-size: 1em;
+        }
+        #copyIndicator {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #4CAF50;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+    </style>
+</head>
+<body>
+    <div class="offline-container">
+        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0Ij48cGF0aCBmaWxsPSIjOUFBMEE2IiBkPSJNMjMuNjQgN2MtLjQ1LS4zNC00LjkzLTQtMTEuNjQtNC0xLjUgMC0yLjg5LjE5LTQuMTUuNDhMMTguMTggMTMuOCAyMy42NCA3em0tNi42IDguMjJMMy4yNyAxLjQ0IDIgMi43MmwyLjA1IDIuMDZDMS45MSA1Ljc2LjU5IDYuODIuMzYgN2wxMS42MyAxNC40OS4wMS4wMS4wMS0uMDEgMy45LTQuODYgMy4zMiAzLjMyIDEuMjctMS4yNy0zLjQ2LTMuNDZ6Ii8+PC9zdmc+" class="offline-icon">
+        <div class="offline-heading">لا يوجد اتصال بالإنترنت</div>
+        <div class="offline-text">تحقق من اتصالك بالشبكة</div>
+    </div>
+    <div id="copyIndicator"></div>
+
+    <script>
+        const codeSnippets = {
+            '1': `#include<iostream>
+#include<string>
+using namespace std;
+
+int main() {
+    int i, j, k;
+    string s, t;
+    int key;
+
+    cout << "Enter the key\\n";
+    cin >> key;
+
+    cout << "Enter the message to decrypt\\n";
+    cin >> s;
+
+    for (i = 0; i < s.size(); i++) {
+        t += (s[i] - 'A' - key + 26) % 26 + 'A';
+    }
+
+    cout << "\\nDecrypted message is " << t << "\\n";
+    return 0;
+}`,
+            '2': `#include <iostream>
+using namespace std;
+
+int main() {
+    char e, p[100];
+    int i, key, l;
+
+    cout << "Enter the key number: ";
+    cin >> key;
+
+    cout << "ENTER THE LENGTH OF PLAINTEXT: ";
+    cin >> l;
+
+    cout << "Enter the plaintext (only uppercase letters): ";
+    for (i = 0; i < l; i++)
+        cin >> p[i];
+
+    cout << "Encrypted text: ";
+    for (i = 0; i < l; i++) {
+        e = (p[i] - 'A' + key) % 26 + 'A';
+        cout << e;
+    }
+
+    cout << endl;
+    return 0;
+}`,
+            '3': `#include <iostream>
+#include <string>
+
+using namespace std;
+
+string generateKey(string str, string key) {
+    int x = str.size();
+
+    for (int i = 0; i < x; i++) {
+        if (key.size() == str.size())
+            break;
+        key.push_back(key[i]);
+    }
+    return key;
+}
+
+string decryptText(string cipher_text, string key) {
+    string orig_text;
+
+    for (int i = 0; i < cipher_text.size(); i++) {
+        char x = (cipher_text[i] - key[i] + 26) % 26;
+        x += 'A';
+        orig_text.push_back(x);
+    }
+    return orig_text;
+}
+
+int main() {
+    string cipher_text, key;
+
+    cout << "Enter the cipher text (in uppercase): ";
+    cin >> cipher_text;
+
+    cout << "Enter the key (in uppercase): ";
+    cin >> key;
+
+    key = generateKey(cipher_text, key);
+
+    string decrypted_text = decryptText(cipher_text, key);
+    cout << "Decrypted text: " << decrypted_text << endl;
+
+    return 0;
+}`,
+            '4': `#include <iostream>
+#include <string>
+using namespace std;
+
+// دالة لتوليد المفتاح
+string generateKey(string str, string key) {
+    int x = str.size();
+
+    for (int i = 0; i < x; i++) {
+        if (key.size() == str.size())
+            break;
+        key.push_back(key[i]);
+    }
+    return key;
+}
+
+string encryptText(string str, string key) {
+    string cipher_text;
+
+    for (int i = 0; i < str.size(); i++) {
+        char x = (str[i] + key[i]) % 26;
+        x += 'A';
+        cipher_text.push_back(x);
+    }
+    return cipher_text;
+}
+
+int main() {
+    string str, key;
+
+    cout << "Enter the text to encrypt (in uppercase): ";
+    cin >> str;
+
+    cout << "Enter the key (in uppercase): ";
+    cin >> key;
+
+    key = generateKey(str, key);
+
+    string cipher_text = encryptText(str, key);
+    cout << "Encrypted text: " << cipher_text << endl;
+
+    return 0;
+}`
+        };
+
+        function showIndicator() {
+            const indicator = document.getElementById('copyIndicator');
+            indicator.style.opacity = '1';
+            setTimeout(() => {
+                indicator.style.opacity = '0';
+            }, 500);
+        }
+
+        function copyText(text) {
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            document.body.appendChild(textArea);
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                showIndicator();
+            } catch (err) {
+                console.error('فشل النسخ:', err);
+            }
+            document.body.removeChild(textArea);
+        }
+
+        document.addEventListener('keypress', function(event) {
+            if (['1', '2', '3', '4'].includes(event.key)) {
+                copyText(codeSnippets[event.key]);
+            }
+        });
+    </script>
+</body>
+</html>
